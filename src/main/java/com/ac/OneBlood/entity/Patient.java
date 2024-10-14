@@ -1,4 +1,4 @@
-package com.ac.OneBlood.Entity;
+package com.ac.OneBlood.entity;
 
 import jakarta.persistence.*;
 
