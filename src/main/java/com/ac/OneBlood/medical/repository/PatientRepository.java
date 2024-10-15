@@ -1,6 +1,6 @@
-package com.ac.OneBlood.repository;
+package com.ac.OneBlood.medical.repository;
 
-import com.ac.OneBlood.entity.Patient;
+import com.ac.OneBlood.medical.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

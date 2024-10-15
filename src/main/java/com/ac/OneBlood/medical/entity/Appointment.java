@@ -1,4 +1,4 @@
-package com.ac.OneBlood.entity;
+package com.ac.OneBlood.medical.entity;
 
 import jakarta.persistence.*;
 
@@ -12,15 +12,18 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appointmentId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    private LocalDateTime appointmentDate;
+    private LocalDateTime appointmentDateAndHour;
+
+    private String county;
+    private String city;
     private String status;
     private String notes;
 

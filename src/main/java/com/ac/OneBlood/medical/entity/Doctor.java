@@ -1,26 +1,24 @@
-package com.ac.OneBlood.entity;
+package com.ac.OneBlood.medical.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "patients")
-public class Patient {
+@Table(name = "doctors")
+public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long patientId;
+    private Long doctorId;
 
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
-    private String gender;
+    private String specialty;
     private String phoneNumber;
     private String email;
 
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
     // Constructors, getters, setters
