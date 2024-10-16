@@ -2,33 +2,36 @@ package com.ac.OneBlood.medical.service.validator;
 
 import com.ac.OneBlood.medical.entity.Patient;
 import com.ac.OneBlood.medical.entity.PatientStatus;
+import com.ac.OneBlood.medical.exception.customExceptions.PatientInvalidDataException;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
 
+@Component
 public class EntityValidator {
 
     public static final int MINIMUM_AGE = 18;
 
-    public void validatePatientAge(Patient patient) throws Exception {
+    public void validatePatientAge(Patient patient) {
         Date patientBirthdate = patient.getDateOfBirth();
         LocalDate patientLocalDate = LocalDate.of(patientBirthdate.getYear(), patientBirthdate.getMonth(), patientBirthdate.getDay());
         Period periodBetweenDates = getPeriodBetweenDateAndNow(patientLocalDate);
 
         if (periodBetweenDates.getYears() < MINIMUM_AGE)
         {
-            throw new Exception("");
+            throw new PatientInvalidDataException("age is below minimum required value");
         }
 
     }
 
-    public void validatePatientStatus(Patient patient) throws Exception {
+    public void validatePatientStatus(Patient patient) {
         if (patient.getStatus().equals(PatientStatus.BLOCKED)) {
-            throw new Exception("");
+            throw new PatientInvalidDataException("status is blocked");
         }
         else if (patient.getStatus().equals(PatientStatus.ON_HOLD) && getLastAppointmentDate().getMonths() < 6) {
-            throw new Exception("");
+            throw new PatientInvalidDataException("status is on hold and the last appointment was less than 6 months ago");
         }
     }
 

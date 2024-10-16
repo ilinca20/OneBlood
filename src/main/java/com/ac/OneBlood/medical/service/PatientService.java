@@ -1,6 +1,9 @@
 package com.ac.OneBlood.medical.service;
 
+import com.ac.OneBlood.medical.entity.Doctor;
 import com.ac.OneBlood.medical.entity.Patient;
+import com.ac.OneBlood.medical.exception.customExceptions.DoctorNotFoundException;
+import com.ac.OneBlood.medical.exception.customExceptions.PatientNotFoundException;
 import com.ac.OneBlood.medical.repository.PatientRepository;
 import com.ac.OneBlood.medical.service.validator.EntityValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +21,11 @@ public class PatientService {
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
     }
+    public Patient getPatientById(Long id) { return patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException(id));}
 
     public Patient createPatient(Patient patient) throws Exception {
-        //validations
         validator.validatePatientAge(patient);
+
         return patientRepository.save(patient);
     }
 }

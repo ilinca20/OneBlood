@@ -1,15 +1,24 @@
 package com.ac.OneBlood.medical.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
-@Entity
+@Builder
+@AllArgsConstructor
 @Getter
+@Setter
+@Entity
 @Table(name = "patients")
 public class Patient {
+    //default constructor for bulider
+    public Patient(){
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

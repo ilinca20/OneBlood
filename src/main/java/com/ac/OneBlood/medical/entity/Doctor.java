@@ -1,12 +1,20 @@
 package com.ac.OneBlood.medical.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "doctors")
 public class Doctor {
+    //for builder
+    public Doctor() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +29,4 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
-    // Constructors, getters, setters
 }
