@@ -1,8 +1,5 @@
 package com.ac.OneBlood.medical.dto;
 
-import com.ac.OneBlood.medical.entity.Doctor;
-import com.ac.OneBlood.medical.entity.Patient;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

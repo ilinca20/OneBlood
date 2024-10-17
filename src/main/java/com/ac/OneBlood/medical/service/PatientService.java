@@ -1,8 +1,6 @@
 package com.ac.OneBlood.medical.service;
 
-import com.ac.OneBlood.medical.entity.Doctor;
 import com.ac.OneBlood.medical.entity.Patient;
-import com.ac.OneBlood.medical.exception.customExceptions.DoctorNotFoundException;
 import com.ac.OneBlood.medical.exception.customExceptions.PatientNotFoundException;
 import com.ac.OneBlood.medical.repository.PatientRepository;
 import com.ac.OneBlood.medical.service.validator.EntityValidator;
@@ -23,7 +21,7 @@ public class PatientService {
     }
     public Patient getPatientById(Long id) { return patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException(id));}
 
-    public Patient createPatient(Patient patient) throws Exception {
+    public Patient createPatient(Patient patient) {
         validator.validatePatientAge(patient);
 
         return patientRepository.save(patient);

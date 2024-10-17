@@ -1,12 +1,8 @@
 package com.ac.OneBlood.medical.dto;
 
-import com.ac.OneBlood.medical.entity.Appointment;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

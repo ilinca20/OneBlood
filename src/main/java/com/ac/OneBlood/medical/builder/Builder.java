@@ -1,7 +1,9 @@
 package com.ac.OneBlood.medical.builder;
 
+import com.ac.OneBlood.medical.dto.AppointmentDto;
 import com.ac.OneBlood.medical.dto.DoctorDto;
 import com.ac.OneBlood.medical.dto.PatientDto;
+import com.ac.OneBlood.medical.entity.Appointment;
 import com.ac.OneBlood.medical.entity.Doctor;
 import com.ac.OneBlood.medical.entity.Patient;
 import org.springframework.stereotype.Component;
@@ -51,6 +53,32 @@ public class Builder {
                 .email(doctorDto.getEmail())
                 .specialty(doctorDto.getSpecialty())
                 .phoneNumber(doctorDto.getPhoneNumber())
+                .build();
+    }
+
+    public Appointment buildAppointment(AppointmentDto appointmentDto, Patient patient, Doctor doctor) {
+        return Appointment.builder()
+                .appointmentId(appointmentDto.getAppointmentId())
+                .appointmentDateAndHour(appointmentDto.getAppointmentDateAndHour())
+                .county(appointmentDto.getCounty())
+                .city(appointmentDto.getCity())
+                .status(appointmentDto.getStatus())
+                .patient(patient)
+                .doctor(doctor)
+                .notes(appointmentDto.getNotes())
+                .build();
+    }
+
+    public AppointmentDto buildAppointmentDto(Appointment appointment) {
+        return AppointmentDto.builder()
+                .appointmentId(appointment.getAppointmentId())
+                .appointmentDateAndHour(appointment.getAppointmentDateAndHour())
+                .city(appointment.getCity())
+                .county(appointment.getCounty())
+                .status(appointment.getStatus())
+                .patient(buildPatientDto(appointment.getPatient()))
+                .doctor(buildDoctorDto(appointment.getDoctor()))
+                .notes(appointment.getNotes())
                 .build();
     }
 
