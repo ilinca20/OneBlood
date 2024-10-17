@@ -4,8 +4,11 @@ import com.ac.OneBlood.medical.builder.Builder;
 import com.ac.OneBlood.medical.dto.AppointmentDto;
 import com.ac.OneBlood.medical.entity.Appointment;
 
+import com.ac.OneBlood.medical.entity.Doctor;
+import com.ac.OneBlood.medical.entity.Patient;
 import com.ac.OneBlood.medical.exception.customExceptions.AppointmentInvalidDataException;
 import com.ac.OneBlood.medical.exception.customExceptions.AppointmentNotFoundException;
+import com.ac.OneBlood.medical.exception.customExceptions.DateAlreadyBooked;
 import com.ac.OneBlood.medical.exception.customExceptions.DoctorNotFoundException;
 import com.ac.OneBlood.medical.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +36,9 @@ public class AppointmentService {
     public Appointment addNewAppointment(AppointmentDto appointmentDTO) throws Exception {
         LocalDateTime appointmentDate;
 
-        doctorService.getDoctorById(appointmentDTO.getDoctor().getDoctorId());
+        Doctor doctor = doctorService.getDoctorById(appointmentDTO.getDoctor().getDoctorId());
 
-        patientService.getPatientById(appointmentDTO.getPatient().getPatientId());
+        Patient patient = patientService.getPatientById(appointmentDTO.getPatient().getPatientId());
 
         try {
             appointmentDate = appointmentDTO.getAppointmentDateAndHour();
@@ -45,10 +48,10 @@ public class AppointmentService {
 
         List<Appointment> conflictingAppointments = appointmentRepository.findByDoctorAndAppointmentDate(appointmentDTO.getDoctor().getDoctorId(), appointmentDate);
         if (!conflictingAppointments.isEmpty()) {
-            throw new Exception("The doctor already has an appointment at this date and time.");
+            throw new DateAlreadyBooked(doctor.getLastName(), appointmentDate.toString());
         }
 
-        Appointment newAppointment = builder.buildAppointment(appointmentDTO, patientService.getPatientById(appointmentDTO.getPatient().getPatientId()), doctorService.getDoctorById(appointmentDTO.getDoctor().getDoctorId()));
+        Appointment newAppointment = builder.buildAppointment(appointmentDTO, patient, doctor);
         return appointmentRepository.save(newAppointment);
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -16,7 +17,9 @@ public class EntityValidator {
 
     public void validatePatientAge(Patient patient) {
         Date patientBirthdate = patient.getDateOfBirth();
-        LocalDate patientLocalDate = LocalDate.of(patientBirthdate.getYear(), patientBirthdate.getMonth(), patientBirthdate.getDay());
+        LocalDate patientLocalDate = patientBirthdate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
         Period periodBetweenDates = getPeriodBetweenDateAndNow(patientLocalDate);
 
         if (periodBetweenDates.getYears() < MINIMUM_AGE)
