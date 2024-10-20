@@ -1,12 +1,14 @@
 package com.ac.OneBlood.account.config;
 
 import com.ac.OneBlood.account.filter.JwtAuthenticationFilter;
+import com.ac.OneBlood.account.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -30,13 +32,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers(toH2Console(), antMatcher(HttpMethod.POST, "/v1/auth/authenticate"))
+                        .ignoringRequestMatchers(toH2Console(), antMatcher(HttpMethod.POST, "/v1/auth/authenticate"), antMatcher("/v1/medical/patient/**"))
                         .disable())
-                        //.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(buildConfig())))
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers(toH2Console(), antMatcher(HttpMethod.POST, "/v1/auth/authenticate"))
-                        .permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(authorize ->
+                    authorize.requestMatchers(toH2Console(), antMatcher(HttpMethod.POST, "/v1/auth/authenticate")).permitAll()
+                            .requestMatchers(antMatcher(HttpMethod.POST, "/v1/medical/patient")).hasAuthority(String.valueOf(Role.ADMIN))
+                            .requestMatchers(antMatcher(HttpMethod.POST,"/v1/medical/doctor"), antMatcher("/v1/medical/doctor")).hasAuthority(String.valueOf(Role.ADMIN))
+                            .requestMatchers(antMatcher("/v1/medical/appointment/**"), antMatcher("/v1/medical/appointment")).hasAnyAuthority(String.valueOf(Role.DOCTOR), String.valueOf(Role.PATIENT), String.valueOf(Role.ADMIN))
+                            .anyRequest().authenticated()
+                )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

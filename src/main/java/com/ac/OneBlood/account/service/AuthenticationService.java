@@ -33,8 +33,13 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest registerRequest) {
         logger.info("authenticate" + authenticationManager.getClass());
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword()));
-
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), registerRequest.getPassword()));
+        }
+        catch(Exception e){
+            logger.info("Exception class " + e.getClass());
+            throw e;
+        }
         var user = repository
                 .findByEmail(registerRequest.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("email not found"));
