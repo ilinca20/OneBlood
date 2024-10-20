@@ -29,11 +29,15 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
+    @Column(nullable = false)
     private LocalDateTime appointmentDateAndHour;
-
+    @Column(nullable = false)
     private String county;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String status;
+    @Column(nullable = false)
     private String notes;
 
     // Constructors, getters, setters

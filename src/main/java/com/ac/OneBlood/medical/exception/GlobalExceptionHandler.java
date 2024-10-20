@@ -2,6 +2,7 @@ package com.ac.OneBlood.medical.exception;
 
 
 import com.ac.OneBlood.medical.exception.customExceptions.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ErrorResponse handleInvalidDataException(RuntimeException ex) {
         return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public @ResponseBody ErrorResponse handleDbException(RuntimeException ex) {
+        return new ErrorResponse("Invalid field: " + ex.getMessage());
     }
 
     @ExceptionHandler({BadCredentialsException.class, Exception.class})

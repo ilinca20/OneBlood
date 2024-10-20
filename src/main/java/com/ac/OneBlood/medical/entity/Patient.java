@@ -24,15 +24,21 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long patientId;
 
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
+    @Column(nullable = false)
     private String gender;
+    @Column(nullable = false)
     private String phoneNumber;
+    @Column(nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="status")
+    @Column(name="status", nullable = false)
     private PatientStatus status;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
