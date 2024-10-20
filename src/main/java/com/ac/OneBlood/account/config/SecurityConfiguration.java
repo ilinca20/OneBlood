@@ -1,14 +1,13 @@
 package com.ac.OneBlood.account.config;
 
 import com.ac.OneBlood.account.filter.JwtAuthenticationFilter;
-import com.ac.OneBlood.account.model.Role;
+import com.ac.OneBlood.logging.LoggingFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -27,7 +26,10 @@ public class SecurityConfiguration {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
+    private LoggingFilter loggingFilter;
+    @Autowired
     private AuthenticationProvider authenticationProvider;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -36,17 +38,18 @@ public class SecurityConfiguration {
                         .disable())
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(authorize ->
-                    authorize.requestMatchers(toH2Console(), antMatcher(HttpMethod.POST, "/v1/auth/authenticate")).permitAll()
-                            .requestMatchers(antMatcher(HttpMethod.POST, "/v1/medical/patient")).hasAuthority(String.valueOf(Role.ADMIN))
-                            .requestMatchers(antMatcher(HttpMethod.POST,"/v1/medical/doctor"), antMatcher("/v1/medical/doctor")).hasAuthority(String.valueOf(Role.ADMIN))
-                            .requestMatchers(antMatcher("/v1/medical/appointment/**"), antMatcher("/v1/medical/appointment")).hasAnyAuthority(String.valueOf(Role.DOCTOR), String.valueOf(Role.PATIENT), String.valueOf(Role.ADMIN))
-                            .anyRequest().authenticated()
+                        authorize.requestMatchers(toH2Console(), antMatcher(HttpMethod.POST, "/v1/auth/authenticate")).permitAll()
+                                .requestMatchers(antMatcher(HttpMethod.POST, "/v1/medical/patient")).hasRole(String.valueOf("ADMIN"))
+                                .requestMatchers(antMatcher(HttpMethod.POST, "/v1/medical/doctor"), antMatcher("/v1/medical/doctor")).hasRole(String.valueOf("ADMIN"))
+                                .requestMatchers(antMatcher("/v1/medical/appointment/**"), antMatcher("/v1/medical/appointment")).hasAnyRole(String.valueOf("DOCTOR"), String.valueOf("PATIENT"), String.valueOf("ADMIN"))
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) ->
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(loggingFilter, JwtAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

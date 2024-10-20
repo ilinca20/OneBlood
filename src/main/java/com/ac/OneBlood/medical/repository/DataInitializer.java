@@ -28,9 +28,9 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        userRepository.save(new User(1, "alice.brown@example.com", "123456", Role.PATIENT));
-        userRepository.save(new User(2, "john.doe@one.com", "123456", Role.DOCTOR));
-        userRepository.save(new User(3, "ilinca@one.com", "123456", Role.ADMIN));
+        userRepository.save(new User(1, "alice.brown@example.com", "123456", Role.ROLE_PATIENT));
+        userRepository.save(new User(2, "john.doe@one.com", "123456", Role.ROLE_DOCTOR));
+        userRepository.save(new User(3, "ilinca@one.com", "123456", Role.ROLE_ADMIN));
 
         doctorRepository.save(Doctor.builder()
                 .specialty("Cardiology")

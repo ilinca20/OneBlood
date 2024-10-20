@@ -23,7 +23,7 @@ public class AuthenticationService {
         User user = User.builder()
                 .email(registerRequest.getAppUser().getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(Role.PATIENT)
+                .role(Role.ROLE_PATIENT)
                 .build();
 
         repository.save(user);

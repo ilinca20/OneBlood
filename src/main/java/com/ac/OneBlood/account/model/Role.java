@@ -1,7 +1,7 @@
 package com.ac.OneBlood.account.model;
 
 public enum Role {
-    PATIENT,
-    DOCTOR,
-    ADMIN
+    ROLE_PATIENT,
+    ROLE_DOCTOR,
+    ROLE_ADMIN
 }

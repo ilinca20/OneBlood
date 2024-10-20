@@ -2,6 +2,7 @@ package com.ac.OneBlood.medical.exception;
 
 
 import com.ac.OneBlood.medical.exception.customExceptions.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,9 +32,9 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("Invalid field: " + ex.getMessage());
     }
 
-    @ExceptionHandler({BadCredentialsException.class, Exception.class})
+    @ExceptionHandler({BadCredentialsException.class, ExpiredJwtException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public @ResponseBody ErrorResponse handleAuthenticationException(RuntimeException ex) {
-        return new ErrorResponse(ex.getMessage() + " " + ex.getClass());
+        return new ErrorResponse(ex.getMessage());
     }
 }
