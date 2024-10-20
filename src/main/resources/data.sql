@@ -1,3 +1,9 @@
+INSERT INTO _users (email, password, role)
+VALUES
+('alice.brown@example.com', '123456', 'PATIENT'),
+('john.doe@one.com', '123456', 'DOCTOR'),
+('ilinca@one.com', '123456', 'ADMIN');
+
 INSERT INTO doctors (first_name, last_name, specialty, phone_number, email)
 VALUES
 ('John', 'Doe', 'Cardiology', '555-1234', 'john.doe@one.com'),
@@ -15,3 +21,5 @@ VALUES
 (1, 1, '2024-10-15 10:00:00', 'Completed', 'Iasi', 'Iasi', 'notes'),
 (2, 2, '2024-11-16 10:20:00', 'Scheduled', 'Cluj', 'Cluj-Napoca', 'notes'),
 (3, 3, '2024-11-16 10:00:00', 'Scheduled', 'Sibiu', 'Sibiu', 'notes');
+
+

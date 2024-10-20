@@ -15,11 +15,11 @@ public class Builder {
                 .patientId(patient.getPatientId())
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
-                .gender(patient.getGender())
+                .phoneNumber(patient.getPhoneNumber())
                 .email(patient.getEmail())
                 .status(patient.getStatus())
+                .gender(patient.getGender())
                 .dateOfBirth(patient.getDateOfBirth())
-                .phoneNumber(patient.getPhoneNumber())
                 .build();
     }
     public Patient buildPatient(PatientDto patientDto) {

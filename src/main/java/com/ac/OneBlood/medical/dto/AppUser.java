@@ -7,10 +7,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class DoctorDto extends AppUser {
-
-    private Long doctorId;
-    private String specialty;
-
-
+public class AppUser {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
 }
